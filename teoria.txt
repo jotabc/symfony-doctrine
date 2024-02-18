@@ -1,0 +1,44 @@
+!!! Conecciones con diff DB !!!.-
+  - MYSQL:
+    docker-compose.yml servicio:
+      sf-doctrine-db:
+        container_name: sf-doctrine-db
+        image: mysql:8.0.26
+        ports:
+            - 10000:3306
+        environment:
+            MYSQL_DATABASE: database
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - sf-doctrine-db-data:/var/lib/mysql
+        networks:
+            - sf-doctrine-network
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+    archivo .env:
+    DATABASE_URL="mysql://root:root@sf-doctrine-db:3306/database?serverVersion=8.0&charset=utf8mb4"
+
+  - POSTGRES
+    docker-compose.yml servicio:
+      sf-doctrine-bd-postgres:
+        container_name: sf-doctrine-bd-postgres
+        image: postgres:13.3
+        ports:
+          - 5432:5432
+        environment:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        volumes:
+          - sf-doctrine-db-data-postgres:/var/lib/postgresql/data
+
+    archivo .env:
+    DATABASE_URL="postgresql://postgres:postgres@sf-doctrine-bd-postgres:5432/postgres?serverVersion=13&charset=utf8"
+
+  - SQLITE.- Para este no necesitamos nosotros un servico de docker, porque sqlite guarda
+      directamene los archivos en nuestra maquina local.
+
+      archivo .env:
+      DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+      Como vemos qui lo va a guardar en la raíz del projecto carpeta var/data.db, este 
+      data.db lo podemos guardar por cualquier nombre si no lo dejamos por defecto.

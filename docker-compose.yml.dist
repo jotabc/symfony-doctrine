@@ -49,8 +49,21 @@ services:
             - sf-doctrine-network
         command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
+    sf-doctrine-bd-postgres:
+        container_name: sf-doctrine-bd-postgres
+        image: postgres:13.3
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: postgres
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+        volumes:
+            - sf-doctrine-db-data-postgres:/var/lib/postgresql/data
+
 volumes:
     sf-doctrine-db-data:
+    sf-doctrine-db-data-postgres:
 
 networks:
     sf-doctrine-network:
