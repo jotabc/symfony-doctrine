@@ -165,8 +165,25 @@
       <index name="I_name_user" columns="name" />
     </indexes>
 
+!!! LIFECYCLES EVENTS !!!.- Son eventos que provee doctrine y que nos permite ejecutar cierta lógica
+  cuando se ejecuta algun estado del ciclo de vida de una entidad y son los más usados:
+    - preRemove.- Este evento ocurre cuando el EntityManager va ha hacer una operación de eliminar
+      de una entidad, si se usa DQL con un DELETE statement no funcionará, es decir solo funciona
+      cuando se invoca el mètodo remove del EntityManager sobre una entidad.
+
+    - postRemove.- Igual que el preRemove solo que ocurre después de eliminar.
+    - prePersist.- Ocurre antes de persistir una entidad.
+    - postPersist.- Ocurre después de persistir una entidad.
+    - preUpdate.- Ocurre antes de que se actualice una entidad, este es uno de los más comunmente
+      usados
+    - postUpdate.- Ocurre después de que se actualice una entidad, este es uno de los más comunmente
+      usados
+      
+
 
 
 
 !!! NOTAS !!!.-
   - Un índice se define para que las busquedas sean más rápidas.
+  - Si doctrine no detecta ningún cambio en nuestro db no hará ninguna petición de guardar obligado
+    actualizar.
