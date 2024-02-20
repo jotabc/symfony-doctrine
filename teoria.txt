@@ -180,6 +180,41 @@
       usados
       
 
+!!! REPOSITORIOS Y TIPOS DE QUERIES !!!.-
+  - Repositorios.- Como reoomendación no es tan recomendable usar directamente los métods
+    como el find, findOne, findAll, findBy etc etc, si usamos esto estamos acoplamos
+    doctrine a nuestros servicios y no es viable, osea nuestra lógica de negocio no debería
+    conocer que es lo que esta por detrás guardando la DB ni de dond vienen los datos.
+    Para solucionar esto podemos crear un clase abstracta o una interface donde podemos
+    alojar todos nuestros métodos de que queremos que se sirvan al repositorio.
+
+  - Consultas a doctrine (Tipos de queries).-
+    - Doctrine ORM(Object-Relational Mapping).- Está sería la capa superior que tiene todos estos
+      métodos que nos van a permitir trabajar con nuestras DB como si fueran entidades
+      de nuestro dominio.
+
+      VENTAJAS:
+        - Cuando generamos las lineas de queries no importa el orden si no que, osea no
+          mecesita ir en orden por ejm para trabajr con filtros es ideal, podemos ir 
+          añadiendo condiciones osea if, y en base a dichas condiciones ir construyendo la
+          query.
+
+      DEVENTAJAS:
+        - Es un poco más tardado en queries porque lo primero que hace es transformar 
+          nuestras entidades a objetos, entonces tenemos que hacer un montón de joins,
+          wheres, entonces tiene que ir obteniendo los resultados, ir hidratando los
+          objetos y luego mostrarlos y en performance puede ser muy costoso en nuestra app. 
+
+    - Doctrine DBAL.- Es una abstracción de doctrine para trabajar con DB está un poco más
+      bajo nivel, y lo que hace es saltarse esta parte de trabajar con objectos por lo que
+      sería un poquito más rápido.
+      VENTAJA:
+        - Para queries muy complejas, porque lo que vamos ha hacer es simplemente usar
+          la conección de la DB para ejecutar queries directamente. 
+
+    - PDO.- Ya no utilizada a día de hoy, es la librería base que conecta php con
+      mysql.
+  Tenemos los ejmplos en el DoctrineUserRepository.php
 
 
 
