@@ -7,7 +7,7 @@ use Symfony\Component\Uid\Uuid;
 
 class User
 {
-    private int $id;
+    private string $id;
 
     private string $name;
 
@@ -15,12 +15,15 @@ class User
 
     private \DateTime $createdOn; 
 
+    private \DateTime $updatedOn;
+
     public function __construct(string $name, string $email)
     {
         $this->id = Uuid::v4()->toRfc4122(); //toRfc4122lo guarda como string
         $this->name = $name;
         $this->email = $email;
         $this->createdOn = new DateTime();
+        $this->markAsUpdated();
     }
 
     public function getId(): string
@@ -50,4 +53,13 @@ class User
         return $this->createdOn;
     }
 
+    public function getUpdatedOn(): \DateTime
+    {
+        return $this->updatedOn;
+    }
+
+    public function markAsUpdated(): void
+    {
+        $this->updatedOn = new DateTime();
+    }
 }
