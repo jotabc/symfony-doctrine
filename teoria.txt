@@ -1,4 +1,13 @@
 !!! Conecciones con diff DB !!!.-
+
+  ! CONCEPTOS IMPORTANTES !.-
+    - Normalmente debería ser la responsabilidad de la app, osea de nuestro código generar un id a
+      nuestras entidades, y no delegar esa funcionalidad al DB, por lo cual debemos de nosotros mismo
+      generar nuestras ids. Es recomendable dejar esa función a nuestra DB cuando nuestras tablas
+      no sean accesibles desde fuera, osea no esten expuestas en una API, si no lo más común es
+      generar uuid o uid para nuestros ids de entidades. Desde la version 5 de symfony hay un componente de symfony para esta función:
+        - composer require symfony/uid
+
   - MYSQL:
     docker-compose.yml servicio:
       sf-doctrine-db:
@@ -115,3 +124,49 @@
       }
       Con esto le tenemos que pasar si o si a nuestra instacia o creacion de un usuario el
       name como obligado.
+      El driver de yml se va a declarar obsoleto en orm 3.
+
+!!! MIGRATIONS !!!.-
+  Todos los comandos usan deben usar bin/console
+
+  - doctrine:migrations:diff 
+    Este comando sirve para generar una migracion comprobando el estado del db con nuestra
+    información de mapping.
+
+  - make:migration.- Esto genera una migración con los cambios, esto es equivalente al
+    comando doctrine:migrations:diff este es de doctrine y el make:migrations de maker.
+
+  - doctrine:migrations:generate.- Esto genera una migración en blanco.
+
+
+!!! XML !!!.- Es muy util este lenguaje por decirlo de una manera para el mapeo de nuestras entidades
+  lo que nos permite es agrupar nuestro mapeo completo de las entidades separadas de la clase, nos
+  permite hacer todo como crear columnas indicies, unique constraints etc etc:
+
+  - Para crear un campo id
+    <id name="id" type="integer" column-definition="INT UNSIGNED NOT NULL">
+    <!-- por defecto es strategy="AUTO" que sería para los ids autoincrementables -->
+        <generator /> 
+    </id>
+
+  - Para crear un campo normal:
+    <!-- por defector el type="string" es string -->
+    <field name="email" length="100" />
+
+  - Para crear unique constraints
+    <unique-constraints>
+      // podemos crear los unique U_email_user = U de unique, email nombre de columna, user nombre de tabla 
+        <unique-constraint name="U_email_user" columns="email" />
+    </unique-constraints>
+
+  - Para crear index:
+    <indexes>
+    // podemos crear los index I_email_user = I de index,email nombre columna, user nombre de tabla 
+      <index name="I_name_user" columns="name" />
+    </indexes>
+
+
+
+
+!!! NOTAS !!!.-
+  - Un índice se define para que las busquedas sean más rápidas.
