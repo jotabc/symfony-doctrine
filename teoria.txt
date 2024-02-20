@@ -1,0 +1,117 @@
+!!! Conecciones con diff DB !!!.-
+  - MYSQL:
+    docker-compose.yml servicio:
+      sf-doctrine-db:
+        container_name: sf-doctrine-db
+        image: mysql:8.0.26
+        ports:
+            - 10000:3306
+        environment:
+            MYSQL_DATABASE: database
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - sf-doctrine-db-data:/var/lib/mysql
+        networks:
+            - sf-doctrine-network
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+    archivo .env:
+    DATABASE_URL="mysql://root:root@sf-doctrine-db:3306/database?serverVersion=8.0&charset=utf8mb4"
+
+  - POSTGRES
+    docker-compose.yml servicio:
+      sf-doctrine-bd-postgres:
+        container_name: sf-doctrine-bd-postgres
+        image: postgres:13.3
+        ports:
+          - 5432:5432
+        environment:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        volumes:
+          - sf-doctrine-db-data-postgres:/var/lib/postgresql/data
+
+    archivo .env:
+    DATABASE_URL="postgresql://postgres:postgres@sf-doctrine-bd-postgres:5432/postgres?serverVersion=13&charset=utf8"
+
+  - SQLITE.- Para este no necesitamos nosotros un servico de docker, porque sqlite guarda
+      directamene los archivos en nuestra maquina local.
+
+      archivo .env:
+      DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+      Como vemos qui lo va a guardar en la raíz del projecto carpeta var/data.db, este 
+      data.db lo podemos guardar por cualquier nombre si no lo dejamos por defecto.
+
+!!! Referencia de configuración !!!.- 
+  - php bin/console config:dump-reference doctrine
+    Este nos muestra todas las opciones de configuración de doctrine en symfony.
+
+  - php bin/console debug:config doctrine
+    Esta nos muestra las configuraciones que tenemos actualmente en nuestra app.
+    Estas referencias estan en la carpeta config/packages/doctrine.yaml
+
+    doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        # server_version: '16' esta opcion debe ser colocada si en nuestro .env en la
+          variable no esta colocada el serverVersion, como mysql o postgres, es 
+          usarlo en el .env porque así cualquier programador puede usar una version especifica => DATABASE_URL="mysql://root:root@sf-doctrine-db:3306/database?serverVersion=8.0&charset=utf8mb4"
+        use_savepoints: true
+    orm: Aqui es donde van a estar nuestras entidades (ubicación)
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotations => el tipo que tendra annotation, attributes, xml
+                  por defecto es attributes.
+                  Si usamos anotaciones debemos instalar:
+                    composer require doctrine/annotations
+                dir: '%kernel.project_dir%/src/Entity' ubicación del archivo donde están.
+                prefix: 'App\Entity' => el prefijo donde están ubicados. (namespace)
+                alias: App
+      Lo más recomandable a día de hoy y como viene por defecto el mapeo de entidades es por
+      attributes. Aunque nuestra entidad este mapeado con attributes o annotations nuestra
+      entidad se hace muy muy enorme es la deventaja.
+      Para evitar esto podemos hacer es usar xml para las entidades de doctrine, otro archivo
+      yml para el tema de validaciones y así la clase User quedaría muy limpia.
+      Si usamos xml lo que debemos es de actualizar nuestra configuración en el doctrine.yaml
+        mappings:
+            App:
+              is_bundle: false
+              type: xml
+              dir: '%kernel.project_dir%/config/orm/mapping' ubicación del archivo de mapeo.
+              prefix: 'App\Entity' => el prefijo donde están ubicados. (namespace)
+              alias: App
+
+
+!!! MAKER BUNDLE !!!.- Con esto podemos crear entidades, commandos symfony, controladores
+  crus, formularios etc etc, podemos crear muchas muchas cosas con el comando maker.
+  - Instalación
+    composer require --dev symfony/maker-bundle
+
+  - Este comando nos mostrará los comandos y las cosas que podemos generar con maker:
+    bin/console make -h
+
+    bin/console make:entity este es un comando "mágico", que crea por nosotoros las entidades
+      cons los diff tipos de campos que le coloquemos, nos crea incluso el Repository donde
+      van nuestras consultas y metodos del sb como save, remove etc, pero no es muy recomendable
+      usarlo porque nos crea automaticamente las cosas e incuso si nosotros no queremos
+      por ejm que el id sea un autoincrement que lo crea por defecto, si no un uuid por
+      ejm, entonces ya crea cosas que nosotros no le pedimos, lo recomandable es ir haciendo
+      paso por paso y mapeando acorde a nuestras necesidades cada entidad y Repository.
+      El make:entity tampoco nos crea el constructor que es una de las cosas que deberiamos
+      tener en cada entidad, que sería las variables que necesita mi entidad para crear una
+      instancia de si misma por ejm crear un user
+
+      public function __construct(string $name)
+      {
+        $this->name = $name
+      }
+      Con esto le tenemos que pasar si o si a nuestra instacia o creacion de un usuario el
+      name como obligado.
