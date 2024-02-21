@@ -216,6 +216,35 @@
       mysql.
   Tenemos los ejmplos en el DoctrineUserRepository.php
 
+!!! RELATIONS !!!.-
+  - oneToOne.- Existe la unidireccional y bidireccional, que la unica diff es que la
+    unidireccional solo se puede acceder desde el lado de la entiedad que tiene la
+    relación por ejm un User tiene un perfil, entonces solo desde el usuario podemos
+    obtener dicho perfil, la bidireccional sería desde ambos lados es decir que 
+    User tiene el perfil y el Perfil tiene el User ejm
+      - <entity name="App\Entity\User">
+          <one-to-one field="profile" target-entity="App\Entity\Profile" mapped-by="user" />
+        </entity>
+       - <entity name="App\Entity\Profile">
+          <one-to-one field="user" target-entity="App\Entity\User" inversed-by="profile">
+            <join-column name="customer_id" referenced-column-name="id" />
+            // Estos valores como name y referenced-column-name son redundates si en nuestra
+              entidad se llaman igual son usados cuando por ejm se llama id_user. Y si usamos
+              los valores por defecto podemos hacer autoclose:
+                <one-to-one field="user" target-entity="App\Entity\User" inversed-by="profile" />
+          </one-to-one>
+        </entity>
+    En este ejmplo vemos que tenemos el:
+      - mapped-by.- El mapped-by sería la entidad principal en este caso User.php
+      - inversed-by.- El inversed-by sería la entidad principal en este caso Profile.php
+
+
+
+!!! COMANDOS UTILES !!!.- todos usan php bin/console o bin/console:
+  - doctrine:mapping:info.- Muestra la información de nuestros archivos de mapeo.
+  - doctrine:schema:validate.- Compara mis archivos de mapeo con la estructura de la
+    DB para ver si están bien, también es muy útil porque me va a decir si tengo
+    alguna relación mal creada.
 
 
 !!! NOTAS !!!.-

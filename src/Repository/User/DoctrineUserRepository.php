@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\User;
 
 use App\Entity\User;
-use Doctrine\ORM\Query\ResultSetMapping;
+use App\Repository\DoctrineBaseRepository;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class DoctrineUserRepository extends DoctrineBaseRepository

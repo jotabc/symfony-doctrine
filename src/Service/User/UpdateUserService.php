@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\User;
 
 use App\Entity\User;
-use App\Repository\DoctrineUserRepository;
-use App\Repository\RedisUserRepository;
-use App\Repository\UserRepository;
+use App\Repository\User\DoctrineUserRepository;
+use App\Repository\Redis\RedisUserRepository;
 
 class UpdateUserService
 {
@@ -19,7 +18,7 @@ class UpdateUserService
 
     public function __invoke(string $id, string $name): User
     {
-        if (null !== $user = $this->doctrineUserRepository->findOneByIdWithDQL($id)) {
+        if (null !== $user = $this->doctrineUserRepository->findOneById($id)) {
             $user->setName($name);
 
             $this->doctrineUserRepository->save($user);

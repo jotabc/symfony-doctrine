@@ -2,28 +2,26 @@
 
 namespace App\Entity;
 
-use DateTime;
 use Symfony\Component\Uid\Uuid;
 
 class User
 {
     private string $id;
-
     private string $name;
-
     private string $email;
-
     private \DateTime $createdOn; 
-
     private \DateTime $updatedOn;
+
+    private Profile $profile;
 
     public function __construct(string $name, string $email)
     {
         $this->id = Uuid::v4()->toRfc4122(); //toRfc4122lo guarda como string
         $this->name = $name;
         $this->email = $email;
-        $this->createdOn = new DateTime();
+        $this->createdOn = new \DateTime();
         $this->markAsUpdated();
+        $this->profile = new Profile($this);
     }
 
     public function getId(): string
@@ -60,6 +58,33 @@ class User
 
     public function markAsUpdated(): void
     {
-        $this->updatedOn = new DateTime();
+        $this->updatedOn = new \DateTime();
     }
+
+    public function getProfile(): Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile($profile): void
+    {
+        $this->profile = $profile;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id, 
+            'name' => $this->name,
+            'email' => $this->email,
+            'createdOn' => $this->createdOn->format(\DateTime::RFC3339),
+            'updatedOn' => $this->updatedOn->format(\DateTime::RFC3339),
+            'profile' => [
+                'id' => $this->profile->getId(),
+                'pictureUrl' => $this->profile->getPictureUrl()
+            ]
+        ];
+    }
+
+    
 }

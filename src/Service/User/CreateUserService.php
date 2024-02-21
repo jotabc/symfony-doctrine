@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\User;
 
 use App\Entity\User;
-use App\Repository\DoctrineUserRepository;
+use App\Repository\User\DoctrineUserRepository;
 
 class CreateUserService
 {
 
     public function __construct(
         private DoctrineUserRepository $userRepository,
-    )
-    {
+    ) {
         
     }
 
