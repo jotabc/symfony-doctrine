@@ -237,6 +237,10 @@
     En este ejmplo vemos que tenemos el:
       - mapped-by.- El mapped-by sería la entidad principal en este caso User.php
       - inversed-by.- El inversed-by sería la entidad principal en este caso Profile.php
+  
+  - oneToOne self-referencing.- Son relaciones uno a uno osea una entidad sobre si misma, por
+    ejm tenemos una entidad Student y un campo mentor, esta tiene relación consigo misma porque
+    un estudiante pueden ser mentores de otros estudiantes.
 
 
 

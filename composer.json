@@ -16,6 +16,7 @@
         "symfony/flex": "^1.17|^2",
         "symfony/framework-bundle": "5.4.*",
         "symfony/monolog-bundle": "^3.10",
+        "symfony/property-access": "5.4.*",
         "symfony/runtime": "5.4.*",
         "symfony/uid": "5.4.*",
         "symfony/yaml": "5.4.*"
@@ -70,6 +71,7 @@
         }
     },
     "require-dev": {
+        "hautelook/alice-bundle": "^2.10",
         "symfony/maker-bundle": "^1.50"
     }
 }

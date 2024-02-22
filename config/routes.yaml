@@ -23,3 +23,9 @@ app.profile.get:
     path: /api/profile/{id}
     controller: App\Controller\Profile\GetProfileByIdAction
     methods: [GET]
+
+# Employee routes
+app.employee.get:
+    path: /api/employees
+    controller: App\Controller\Employee\GetEmployeeAction
+    methods: [GET]
