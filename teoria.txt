@@ -242,7 +242,11 @@
     ejm tenemos una entidad Student y un campo mentor, esta tiene relación consigo misma porque
     un estudiante pueden ser mentores de otros estudiantes.
 
-
+  - manyToOne unidirectional.- Estas rlaciones se suelen utilizar cuando varias ocurrencias de una entidad
+    tiene una asocioción con una instancia de otra entidad. Por ejm varios usuarios pueden pertenecer a
+    una ciudad.
+    Al ser una unidireccional podemos desde un usario poder saber de que country es, pero desde un
+    country no podemos saber que usuarios que viven en ese país.
 
 !!! COMANDOS UTILES !!!.- todos usan php bin/console o bin/console:
   - doctrine:mapping:info.- Muestra la información de nuestros archivos de mapeo.
