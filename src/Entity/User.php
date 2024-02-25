@@ -13,6 +13,7 @@ class User
     private \DateTime $updatedOn;
 
     private Profile $profile;
+    private ?Country $country;
 
     public function __construct(string $name, string $email)
     {
@@ -22,6 +23,7 @@ class User
         $this->createdOn = new \DateTime();
         $this->markAsUpdated();
         $this->profile = new Profile($this);
+        $this->country = null;
     }
 
     public function getId(): string
@@ -71,6 +73,16 @@ class User
         $this->profile = $profile;
     }
 
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry($country): void
+    {
+        $this->country = $country;
+    }
+
     public function toArray(): array
     {
         return [
@@ -79,12 +91,9 @@ class User
             'email' => $this->email,
             'createdOn' => $this->createdOn->format(\DateTime::RFC3339),
             'updatedOn' => $this->updatedOn->format(\DateTime::RFC3339),
-            'profile' => [
-                'id' => $this->profile->getId(),
-                'pictureUrl' => $this->profile->getPictureUrl()
-            ]
+            'profile' => $this->profile->toArray(),
+            'country' => $this->country->toArray()
         ];
     }
 
-    
 }
