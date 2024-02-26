@@ -26,6 +26,40 @@
 
         <many-to-one field="country" target-entity="App\Entity\Country" />
 
+        <!-- oneToMany unidireccional con join table -->
+        <many-to-many field="phones" target-entity="App\Entity\Phone">
+            <join-table name="user_phone">
+                <!-- parte del one -->
+                <join-columns>
+                    <join-column name="user_id" />
+                </join-columns>
+
+                <!-- parte del many -->
+                <inverse-join-columns>
+                    <join-column nam="phone_id" unique="true" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <!-- manyToMany unidireccional -->
+        <many-to-many field="cards" target-entity="App\Entity\Card">
+            <join-table name="user_card">
+                <!-- parte del one -->
+                <join-columns>
+                    <join-column name="user_id" />
+                </join-columns>
+
+                <!-- parte del many -->
+                <inverse-join-columns>
+                    <join-column nam="card_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+        <indexes>
+        
+        </indexes>
+
         <lifecycle-callbacks>
             <lifecycle-callback type="preUpdate" method="markAsUpdated" />
         </lifecycle-callbacks>

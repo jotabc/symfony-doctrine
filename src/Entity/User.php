@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Uid\Uuid;
 
 class User
@@ -14,6 +16,8 @@ class User
 
     private Profile $profile;
     private ?Country $country;
+    private Collection $phones;
+    private Collection $cards;
 
     public function __construct(string $name, string $email)
     {
@@ -24,6 +28,8 @@ class User
         $this->markAsUpdated();
         $this->profile = new Profile($this);
         $this->country = null;
+        $this->phones = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function getId(): string
@@ -83,6 +89,44 @@ class User
         $this->country = $country;
     }
 
+    public function getPhones()
+    {
+        return $this->phones;
+    }
+
+    public function addPhone(Phone $phone): void
+    {
+        if (!$this->phones->contains($phone)) {
+            $this->phones->add($phone);
+        }
+    }
+
+    public function removePhone(Phone $phone): void
+    {
+        if ($this->phones->contains($phone)) {
+            $this->phones->removeElement($phone);
+        }
+    }
+
+    public function getCards()
+    {
+        return $this->cards;
+    }
+
+    public function addCard(Card $card): void
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards->add($card);
+        }
+    }
+
+    public function removeCard(Card $card): void
+    {
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
+        }
+    }
+
     public function toArray(): array
     {
         return [
@@ -92,7 +136,13 @@ class User
             'createdOn' => $this->createdOn->format(\DateTime::RFC3339),
             'updatedOn' => $this->updatedOn->format(\DateTime::RFC3339),
             'profile' => $this->profile->toArray(),
-            'country' => $this->country->toArray()
+            'country' => $this->country->toArray(),
+            'phones' =>array_map(function (Phone $phone): array {
+                return $phone->toArray();
+            },  $this->phones->toArray()),
+            'cards' =>array_map(function (Card $card): array {
+                return $card->toArray();
+            },  $this->cards->toArray()),
         ];
     }
 
