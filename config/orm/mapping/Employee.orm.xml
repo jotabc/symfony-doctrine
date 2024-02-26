@@ -9,6 +9,7 @@
 
         <!-- relations -->
         <one-to-one field="manager" target-entity="App\Entity\Employee" nullable="true" />
+        <one-to-many field="cars" target-entity="App\Entity\Car" mapped-by="owner" />
 
         <unique-constraints>
             <unique-constraint name="U_employee_manager_id" columns="manager_id" />
