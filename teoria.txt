@@ -310,11 +310,14 @@
             
             $this->connection->executeQuery(strtr($query, $params));
         }
-
     }
 
+  - oneToMany unidirectional with Join Table.- Esta relación es muy muy parecida a la manyToMany salvo por
+    una excepción, que cuando creamos el oneToMany con join table lo que podemos hacer es colocarle un unique
+    a la relación para que si ese telefono ya tiene asigando un usuario no puedo ese telefono asigarse a otro
+    en este caso el unique="true" va colocado en el inverse-join-column, en cambio cuando hacemos las manyToMany
+    no tenemos ese unique
 
-    private Colle
 
 !!! COMANDOS UTILES !!!.- todos usan php bin/console o bin/console:
   - doctrine:mapping:info.- Muestra la información de nuestros archivos de mapeo.
