@@ -248,6 +248,74 @@
     Al ser una unidireccional podemos desde un usario poder saber de que country es, pero desde un
     country no podemos saber que usuarios que viven en ese país.
 
+  - oneToMany bidirectional.- Aquí la perte del many es la que tiene la foreign key, es decir es el
+    lado que contiene la relación y doctrine necesita del que se defina esa esta parte del many para 
+    poder entender como funciona esa relación.
+    En esta relación la parte del one necesita tener el atributo mappedBy y que la parte del many
+    necesita el inversedBy. un oneToMany bidireccional o manyToOne bidireccional es lo mismo.
+    En este ejemplo veremos como un empleado puede tener uno o varios coches.
+
+    En el lado one de la relación en este caso Employee debemos de crear la relación como una collection
+    e instanciarlo como un new Array Collection, así nos permitira hacer varias cosas a esa collection
+    como buscar eliminar o añadir el elemento. ejm
+    
+    Employee.php
+
+    use Doctrine\Common\Collections\ArrayCollection;
+    use Doctrine\Common\Collections\Collection;
+
+    class etc {
+
+      private Collection $cars;
+
+      public function __construct(string $name)
+      {
+        $this->cars = new ArrayCollection();
+      }
+
+      //getter
+      public function getCars(): ArrayCollection|Collection
+      {
+        return $this->cars;
+      }
+
+      //Metodos para manejar la collection en este caso cars todo dentro de la misma entidad.
+      public function addCar(Car $car): void
+      {
+          if (!$this->cars->contains($car)) {
+              $this->cars->add($car);
+          }
+      }
+
+      public function removeCar(Car $car): void
+      {
+          if ($this->cars->contains($car)) {
+              $this->cars->remove($car);
+          }
+      }
+
+      // Estos metodos de las collection como el removeCar usar esto trae un coste de performance en nuestra
+        app, para esto se opta por crear un metodo en el reposotorio que haga la query, luego podemos 
+        crear un controller y un servicio que ocupe este método y poder usarlo en nuestras rutas por ejm:
+
+        DoctrineEmployeeRepository.php
+        public function removeCarFromEmployee(string $employeeId, string $carId): void
+        {
+            $params = [
+                ':ownerId' => $this->connection->quote($employeeId),
+                ':carId' => $this->connection->quote($carId),
+            ];
+
+            $query = 'DELETE from car WHERE id = :carId AND owner_id = :ownerId';
+            
+            $this->connection->executeQuery(strtr($query, $params));
+        }
+
+    }
+
+
+    private Colle
+
 !!! COMANDOS UTILES !!!.- todos usan php bin/console o bin/console:
   - doctrine:mapping:info.- Muestra la información de nuestros archivos de mapeo.
   - doctrine:schema:validate.- Compara mis archivos de mapeo con la estructura de la

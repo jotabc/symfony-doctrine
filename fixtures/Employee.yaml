@@ -4,5 +4,5 @@ App\Entity\Employee:
             name: Peter
     Employee-1:
         __construct:
-            name: Peter
+            name: Brian
         manager: '@Employee-0'
