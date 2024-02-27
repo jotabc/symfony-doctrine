@@ -49,10 +49,10 @@
 
       archivo .env:
       DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
-      Como vemos qui lo va a guardar en la raíz del projecto carpeta var/data.db, este 
+      Como vemos qui lo va a guardar en la raíz del projecto carpeta var/data.db, este
       data.db lo podemos guardar por cualquier nombre si no lo dejamos por defecto.
 
-!!! Referencia de configuración !!!.- 
+!!! Referencia de configuración !!!.-
   - php bin/console config:dump-reference doctrine
     Este nos muestra todas las opciones de configuración de doctrine en symfony.
 
@@ -67,7 +67,7 @@
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         # server_version: '16' esta opcion debe ser colocada si en nuestro .env en la
-          variable no esta colocada el serverVersion, como mysql o postgres, es 
+          variable no esta colocada el serverVersion, como mysql o postgres, es
           usarlo en el .env porque así cualquier programador puede usar una version especifica => DATABASE_URL="mysql://root:root@sf-doctrine-db:3306/database?serverVersion=8.0&charset=utf8mb4"
         use_savepoints: true
     orm: Aqui es donde van a estar nuestras entidades (ubicación)
@@ -129,7 +129,7 @@
 !!! MIGRATIONS !!!.-
   Todos los comandos usan deben usar bin/console
 
-  - doctrine:migrations:diff 
+  - doctrine:migrations:diff
     Este comando sirve para generar una migracion comprobando el estado del db con nuestra
     información de mapping.
 
@@ -146,7 +146,7 @@
   - Para crear un campo id
     <id name="id" type="integer" column-definition="INT UNSIGNED NOT NULL">
     <!-- por defecto es strategy="AUTO" que sería para los ids autoincrementables -->
-        <generator /> 
+        <generator />
     </id>
 
   - Para crear un campo normal:
@@ -155,13 +155,13 @@
 
   - Para crear unique constraints
     <unique-constraints>
-      // podemos crear los unique U_email_user = U de unique, email nombre de columna, user nombre de tabla 
+      // podemos crear los unique U_email_user = U de unique, email nombre de columna, user nombre de tabla
         <unique-constraint name="U_email_user" columns="email" />
     </unique-constraints>
 
   - Para crear index:
     <indexes>
-    // podemos crear los index I_email_user = I de index,email nombre columna, user nombre de tabla 
+    // podemos crear los index I_email_user = I de index,email nombre columna, user nombre de tabla
       <index name="I_name_user" columns="name" />
     </indexes>
 
@@ -178,7 +178,7 @@
       usados
     - postUpdate.- Ocurre después de que se actualice una entidad, este es uno de los más comunmente
       usados
-      
+
 
 !!! REPOSITORIOS Y TIPOS DE QUERIES !!!.-
   - Repositorios.- Como reoomendación no es tan recomendable usar directamente los métods
@@ -195,22 +195,22 @@
 
       VENTAJAS:
         - Cuando generamos las lineas de queries no importa el orden si no que, osea no
-          mecesita ir en orden por ejm para trabajr con filtros es ideal, podemos ir 
+          mecesita ir en orden por ejm para trabajr con filtros es ideal, podemos ir
           añadiendo condiciones osea if, y en base a dichas condiciones ir construyendo la
           query.
 
       DEVENTAJAS:
-        - Es un poco más tardado en queries porque lo primero que hace es transformar 
+        - Es un poco más tardado en queries porque lo primero que hace es transformar
           nuestras entidades a objetos, entonces tenemos que hacer un montón de joins,
           wheres, entonces tiene que ir obteniendo los resultados, ir hidratando los
-          objetos y luego mostrarlos y en performance puede ser muy costoso en nuestra app. 
+          objetos y luego mostrarlos y en performance puede ser muy costoso en nuestra app.
 
     - Doctrine DBAL.- Es una abstracción de doctrine para trabajar con DB está un poco más
       bajo nivel, y lo que hace es saltarse esta parte de trabajar con objectos por lo que
       sería un poquito más rápido.
       VENTAJA:
         - Para queries muy complejas, porque lo que vamos ha hacer es simplemente usar
-          la conección de la DB para ejecutar queries directamente. 
+          la conección de la DB para ejecutar queries directamente.
 
     - PDO.- Ya no utilizada a día de hoy, es la librería base que conecta php con
       mysql.
@@ -220,7 +220,7 @@
   - oneToOne.- Existe la unidireccional y bidireccional, que la unica diff es que la
     unidireccional solo se puede acceder desde el lado de la entiedad que tiene la
     relación por ejm un User tiene un perfil, entonces solo desde el usuario podemos
-    obtener dicho perfil, la bidireccional sería desde ambos lados es decir que 
+    obtener dicho perfil, la bidireccional sería desde ambos lados es decir que
     User tiene el perfil y el Perfil tiene el User ejm
       - <entity name="App\Entity\User">
           <one-to-one field="profile" target-entity="App\Entity\Profile" mapped-by="user" />
@@ -237,7 +237,7 @@
     En este ejmplo vemos que tenemos el:
       - mapped-by.- El mapped-by sería la entidad principal en este caso User.php
       - inversed-by.- El inversed-by sería la entidad principal en este caso Profile.php
-  
+
   - oneToOne self-referencing.- Son relaciones uno a uno osea una entidad sobre si misma, por
     ejm tenemos una entidad Student y un campo mentor, esta tiene relación consigo misma porque
     un estudiante pueden ser mentores de otros estudiantes.
@@ -249,7 +249,7 @@
     country no podemos saber que usuarios que viven en ese país.
 
   - oneToMany bidirectional.- Aquí la perte del many es la que tiene la foreign key, es decir es el
-    lado que contiene la relación y doctrine necesita del que se defina esa esta parte del many para 
+    lado que contiene la relación y doctrine necesita del que se defina esa esta parte del many para
     poder entender como funciona esa relación.
     En esta relación la parte del one necesita tener el atributo mappedBy y que la parte del many
     necesita el inversedBy. un oneToMany bidireccional o manyToOne bidireccional es lo mismo.
@@ -258,7 +258,7 @@
     En el lado one de la relación en este caso Employee debemos de crear la relación como una collection
     e instanciarlo como un new Array Collection, así nos permitira hacer varias cosas a esa collection
     como buscar eliminar o añadir el elemento. ejm
-    
+
     Employee.php
 
     use Doctrine\Common\Collections\ArrayCollection;
@@ -295,7 +295,7 @@
       }
 
       // Estos metodos de las collection como el removeCar usar esto trae un coste de performance en nuestra
-        app, para esto se opta por crear un metodo en el reposotorio que haga la query, luego podemos 
+        app, para esto se opta por crear un metodo en el reposotorio que haga la query, luego podemos
         crear un controller y un servicio que ocupe este método y poder usarlo en nuestras rutas por ejm:
 
         DoctrineEmployeeRepository.php
@@ -307,7 +307,7 @@
             ];
 
             $query = 'DELETE from car WHERE id = :carId AND owner_id = :ownerId';
-            
+
             $this->connection->executeQuery(strtr($query, $params));
         }
     }
@@ -316,7 +316,11 @@
     una excepción, que cuando creamos el oneToMany con join table lo que podemos hacer es colocarle un unique
     a la relación para que si ese telefono ya tiene asigando un usuario no puedo ese telefono asigarse a otro
     en este caso el unique="true" va colocado en el inverse-join-column, en cambio cuando hacemos las manyToMany
-    no tenemos ese unique
+    no tenemos ese unique.
+
+  - manyToMany bidirectional.- Son iguales a lad unidireccionales, solo que lo unico que hay que hacer es agregar
+    la relación inversa en la otra entidad para poder acceder a amabas colecciones. por ejm
+    Desde un Usuario podemos acceder a la colección de grupos y de un grupo podemos acceder a la colección de usuarios.
 
 
 !!! COMANDOS UTILES !!!.- todos usan php bin/console o bin/console:

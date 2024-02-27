@@ -36,13 +36,13 @@
 
                 <!-- parte del many -->
                 <inverse-join-columns>
-                    <join-column nam="phone_id" unique="true" />
+                    <join-column name="phone_id" unique="true" />
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
 
         <!-- manyToMany unidireccional -->
-        <many-to-many field="cards" target-entity="App\Entity\Card">
+        <many-to-many field="cards" target-entity="App\Entity\Card" inversed-by="users">
             <join-table name="user_card">
                 <!-- parte del one -->
                 <join-columns>
@@ -51,13 +51,13 @@
 
                 <!-- parte del many -->
                 <inverse-join-columns>
-                    <join-column nam="card_id" />
+                    <join-column name="card_id" />
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
 
         <indexes>
-        
+
         </indexes>
 
         <lifecycle-callbacks>
