@@ -322,6 +322,10 @@
     la relación inversa en la otra entidad para poder acceder a amabas colecciones. por ejm
     Desde un Usuario podemos acceder a la colección de grupos y de un grupo podemos acceder a la colección de usuarios.
 
+  - manyToMany self referencing.-
+    Un usuario puede tener una collection de amigos y una collection de quien es amigo, osea yo puedo tener 5 amigos y
+    también ser amigo de 3 usuarios.
+
 
 !!! COMANDOS UTILES !!!.- todos usan php bin/console o bin/console:
   - doctrine:mapping:info.- Muestra la información de nuestros archivos de mapeo.
