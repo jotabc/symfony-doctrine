@@ -13,6 +13,11 @@ app.user.update:
     controller: App\Controller\User\UpdateUserAction
     methods: [PUT]
 
+app.user.update.all:
+    path: /api/users/update-all
+    controller: App\Controller\User\UpdateUserScoreAction
+    methods: [POST]
+
 app.user.get:
     path: /api/users/{id}
     controller: App\Controller\User\GetUserByIdAction
@@ -29,3 +34,8 @@ app.employee.get:
     path: /api/employees
     controller: App\Controller\Employee\GetEmployeeAction
     methods: [GET]
+
+app.employee.create:
+    path: /api/employees/transactions
+    controller: App\Controller\Employee\CreateEmployeeAction
+    methods: [POST]
