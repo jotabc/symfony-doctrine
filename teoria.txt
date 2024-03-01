@@ -333,8 +333,31 @@
     DB para ver si están bien, también es muy útil porque me va a decir si tengo
     alguna relación mal creada.
 
+!!! BATCH PROCESSING Y TRANSACCIONES !!!
+  
+  - Batch processing.- se usan para grandes con set de datos muy grandes, podemos
+    usarlos para grandes operaciones de inserción, actualización y eliminación.
+
+  - Transacciones.- Lo que se plantea en esto es que, por cada request que hacemos en nuestra app
+    tiene que haber una operación de base de datos.
+    Es decir, si yo quiero crear un usuario llamo a un endpoint le paso los datos y se guarda el usuario
+    y ya esta u otro ejemplo es que quiero obetenr un usuario le paso el id y presento ese usuario
+    al usuario que me ha solicitado.
+    No es una buena practica que al guardar el usuario se guarde ese usuario luego se cree otra entidad
+    y también se guarde esa entidad porque estariamos rompiendo este principio, pero si no hay más
+    remedio que hacerlo lo que se recomienda usar en estos casos en una transacción.
+
+    Lo que nos permite es que lo que metamos dentro de esa transacción se va a ejecutar se va ha hacer
+    un commit y si una de esas operaciones falla lo que va ha hacer es un rollback.
+    Por ejm creamos un usuario lo guardamos en DB, luego creamos otra entidad y la guardamos en DB, si
+    lo hacemos así en orden si por ejm falla la última tendremos ese usuario en la DB, pero no vamos
+    a tener la segunda entidad persistida por lo tanto nuestra DB va a estar en un estaod inconsistente
+    por eso es útil las transacciones porque metemos todo aquí si por si una de las operaciones falla
+    haga un rollback se da la excepción y la DB quede como estaba al principio de esa request.
+
 
 !!! NOTAS !!!.-
   - Un índice se define para que las busquedas sean más rápidas.
   - Si doctrine no detecta ningún cambio en nuestro db no hará ninguna petición de guardar obligado
     actualizar.
+

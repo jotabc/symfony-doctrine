@@ -21,6 +21,8 @@ class User
     private Collection $friendsWithMe;
     private Collection $myFriends;
 
+    private int $score;
+
     public function __construct(string $name, string $email)
     {
         $this->id = Uuid::v4()->toRfc4122(); //toRfc4122lo guarda como string
@@ -35,6 +37,8 @@ class User
         $this->cards = new ArrayCollection();
         $this->friendsWithMe = new ArrayCollection();
         $this->myFriends = new ArrayCollection();
+
+        $this->score = 0;
     }
 
     public function getId(): string
@@ -174,6 +178,16 @@ class User
         if ($this->myFriends->contains($friend)) {
             $this->myFriends->removeElement($friend);
         }
+    }
+
+    public function getScore(): int
+    {
+        return $this->score;
+    }
+
+    public function updateScore(): void
+    {
+        $this->score += 1;
     }
 
     public function toArray(): array
